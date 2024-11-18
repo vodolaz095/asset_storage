@@ -1,10 +1,12 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 type Asset struct {
 	Name      string
 	UID       uint64
-	Data      string
+	Data      []byte
 	CreatedAt time.Time
 }
