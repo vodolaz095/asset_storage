@@ -3,10 +3,13 @@ package pg
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/vodolaz095/asset_storage/internal/model"
 )
+
+const SessionTTL = 24 * time.Hour
 
 type Session struct {
 	baseRepo
@@ -25,6 +28,10 @@ func (s *Session) Extract(ctx context.Context, sessionID string) (user *model.Us
 		}
 		return nil, err
 	}
+	if sessionFound.CreatedAt.Before(time.Now().Add(-SessionTTL)) {
+		return nil, model.SessionExpiredError
+	}
+
 	err = s.Conn.
 		QueryRow(ctx, "SELECT id, login, password_hash, created_at FROM users WHERE id=$1", sessionFound.UID).
 		Scan(&userFound.ID, &userFound.Login, &userFound.PasswordHash, &userFound.CreatedAt)

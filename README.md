@@ -164,6 +164,7 @@ curl -v --data '{"login":"alice","password":"secret"}' http://localhost:3000/api
 
 В логе приложение должно написать
 ```
+22:25:47 transport_login.go:35: ASSET: Поступил запрос на авторизацию с [::1]:36652
 22:25:47 authentication.go:18: ASSET: Пользователь alice пытается авторизоваться...
 22:25:47 authentication.go:24: ASSET: Пользователь alice создал сессию.
 ```
@@ -173,24 +174,28 @@ curl -v --data '{"login":"alice","password":"secret"}' http://localhost:3000/api
 ```shell
 
 $ make integration/create_ok 
-curl -v -H "Authorization: Bearer "dd5f8e4d96eed2151f7b78319528ad6a"" --data body_52 "http://localhost:3000/"/api/upload-asset/key_52
-* processing: http://localhost:3000//api/upload-asset/key_52
+curl -v -H "Authorization: Bearer "c38fcc2c923d818b1ba765eaf5053d18"" --data body_46 "http://localhost:3000/"api/upload-asset/key_46
+* processing: http://localhost:3000/api/upload-asset/key_46
 *   Trying [::1]:3000...
 * Connected to localhost (::1) port 3000
-> POST //api/upload-asset/key_52 HTTP/1.1
+> POST /api/upload-asset/key_46 HTTP/1.1
 > Host: localhost:3000
 > User-Agent: curl/8.2.1
 > Accept: */*
-> Authorization: Bearer dd5f8e4d96eed2151f7b78319528ad6a
+> Authorization: Bearer c38fcc2c923d818b1ba765eaf5053d18
 > Content-Length: 7
 > Content-Type: application/x-www-form-urlencoded
 > 
-< HTTP/1.1 301 Moved Permanently
-< Location: /api/upload-asset/key_52
-< Date: Mon, 18 Nov 2024 19:26:52 GMT
-< Content-Length: 0
+< HTTP/1.1 201 Created
+< Location: /api/asset/key_46
+< Date: Mon, 18 Nov 2024 20:09:46 GMT
+< Content-Length: 19
+< Content-Type: text/plain; charset=utf-8
 < 
+{
+ "status": "ok"
 * Connection #0 to host localhost left intact
+}
 
 ```
 
@@ -242,3 +247,43 @@ body_42
 22:32:13 assets.go:25: ASSET: Пользователь alice получил данные по ключу key_42 (7 байт)
 22:32:13 transport_get.go:70: ASSET: Пользователь alice запросил данные по ключу key_42 и получил 7 байт
 ```
+
+
+Ответы на дополнительные вопросы
+==========================================
+
+**Что можно улучшить в схеме БД?**
+1. Хешировать пароль нормальным алгоритмом [argon2id](https://github.com/alexedwards/argon2id) на стороне приложения, а не в базе данных
+2. Добавить [constraints](https://www.postgresql.org/docs/current/ddl-constraints.html), чтобы не было сессий и ассетов без пользователя
+
+**Доработайте механизм авторизации таким образом, что бы в каждый момент времени у пользователя была активна только одна (последняя) сессия.**
+
+пока нет идей как это можно сделать без изменений структуры базы данных
+
+**Ограничьте максимальное время пользовательской сессии до 24-х часов.**
+
+сделал
+
+**Добавьте в БД данные об IP адресе авторизованного пользователя.**
+1. надо менять структуру базы данных - добавлять поле типа https://www.postgresql.org/docs/current/datatype-net-types.html#DATATYPE-INET в таблицу sessions
+2. Если мы используем какие-либо reverse-proxy или балансировщики/CDN перед API, то реальный адрес клиента может быть или в
+   заголовке `X-Forwarded-For` или в `CF-Connecting-IP` для Cloudflare. Также бы было неплохо указать список IP адресов reverse-proxy 
+   запросам с которых мы доверяем см. https://pkg.go.dev/github.com/gin-gonic/gin#Engine.SetTrustedProxies
+
+
+**Реализуйте методы API для получения списка всех закаченных файлов**
+долго
+
+**Реализуйте методы API для удаления файлов.**
+долго
+
+**Реализуйте работу сервера по протоколу HTTPS.**
+См. [transport.go](internal%2Ftransport%2Fhttp%2Ftransport.go) - функция ListenHTTPS
+
+
+
+
+
+
+
+

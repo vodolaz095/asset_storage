@@ -32,7 +32,7 @@ func (s *WebServer) login(writer http.ResponseWriter, request *http.Request) {
 		)
 		return
 	}
-
+	s.Logger.Printf("Поступил запрос на авторизацию с %s", request.RemoteAddr)
 	session, err := s.Authentication.Login(request.Context(), form.Username, form.Password)
 	if err != nil {
 		if errors.Is(err, model.WrongUsernameOrPasswordError) {
