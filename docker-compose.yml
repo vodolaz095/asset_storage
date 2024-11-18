@@ -1,0 +1,16 @@
+version: "3.8"
+
+volumes:
+  pg_data:
+
+services:
+  # https://hub.docker.com/_/postgres
+  postgres:
+    image: mirror.gcr.io/postgres:15-alpine
+    environment:
+      POSTGRES_USER: "assets"
+      POSTGRES_PASSWORD: "assets"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
