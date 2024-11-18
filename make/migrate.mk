@@ -1,4 +1,5 @@
 # install goose https://github.com/pressly/goose
+
 export db_url="user=assets password=assets dbname=assets host=localhost port=5432 sslmode=disable"
 
 migrate/info:

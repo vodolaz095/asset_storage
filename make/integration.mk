@@ -1,37 +1,47 @@
 # install `curl`!
 
+# где запущено приложение
+export endpoint="http://localhost:3000/"
+
 # эти переменные можно менять
 export user_login="alice"
-export user_good_password="secret"
-export user_wrong_password="not_secret"
+export user_good_password="secret" # успешная авторизация по команде make integraion/auth_ok
+export user_wrong_password="not_secret" # ошибка авторизации по команде make integraion/auth_fail
 
-# после успешного логина задайте эту переменную на полученный, в результате вызова
-# `make integraion/auth_ok`, токен
-export session_good_token="dd5f8e4d96eed2151f7b78319528ad6a"
+# после успешного логина по команде make integraion/auth_ok
+# задайте эту переменную на полученный токен
+export session_good_token="c38fcc2c923d818b1ba765eaf5053d18"
 
 # тут должен быть токен, которого нет в таблице сессий
 export session_bad_token="dd5ff7b78319528ad6a8e4d96eed2151"
 
-# данные для создания нового объекта
+
+# данные для создания нового объекта по команде integration/create_ok
+# убедитесь, что `session_good_token` задан верно!
 export asset_key=key_$(shell date "+%S")
 export asset_body=body_$(shell date "+%S")
 
-export asset_key_good="key_01"
+# после того, как вы создадите объект по команде integration/create_ok, в эту переменную надо сохранить
+# идентификатор созданного объекта
+export asset_key_good="key_42"
 
+# аутентификация
 integration/auth_ok:
-	curl -v --data '{"login":$(user_login),"password":$(user_good_password)}' http://localhost:3000/api/auth
+	curl -v --data '{"login":$(user_login),"password":$(user_good_password)}' $(endpoint)api/auth
 
 integration/auth_fail:
-	curl -v --data '{"login":$(user_login),"password":$(user_wrong_password)}' http://localhost:3000/api/auth
+	curl -v --data '{"login":$(user_login),"password":$(user_wrong_password)}' $(endpoint)api/auth
 
+# попытка создания объекта
 integration/create_ok:
-	curl -v -H "Authorization: Bearer $(session_good_token)" --data $(asset_body) http://localhost:3000/api/upload-asset/$(asset_key)
+	curl -v -H "Authorization: Bearer $(session_good_token)" --data $(asset_body) $(endpoint)api/upload-asset/$(asset_key)
 
 integration/create_fail:
-	curl -v -H "Authorization: Bearer $(session_bad_token)" --data $(asset_body) http://localhost:3000/api/upload-asset/$(asset_key)
+	curl -v -H "Authorization: Bearer $(session_bad_token)" --data $(asset_body) $(endpoint)api/upload-asset/$(asset_key)
 
+# получение объекта
 integration/get_ok:
-	curl -v -H "Authorization: Bearer $(session_good_token)"  http://localhost:3000/api/asset/$(asset_key_good)
+	curl -v -H "Authorization: Bearer $(session_good_token)" $(endpoint)api/asset/$(asset_key_good)
 
 integration/get_fail:
-	curl -v -H "Authorization: Bearer $(session_good_token)"  http://localhost:3000/api/asset/not_found
+	curl -v -H "Authorization: Bearer $(session_good_token)" $(endpoint)api/asset/not_found

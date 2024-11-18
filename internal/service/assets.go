@@ -14,7 +14,7 @@ type Assets struct {
 }
 
 func (a *Assets) LoadAssetForUser(ctx context.Context, assetsID string, user *model.User) (*model.Asset, error) {
-	log.Printf("Пользователь %s пытается получить данные по ключу %s", user.Login, assetsID)
+	a.Logger.Printf("Пользователь %s пытается получить данные по ключу %s", user.Login, assetsID)
 	asset, err := a.AssetsRepo.LoadAssetForUser(ctx, assetsID, user)
 	if err != nil {
 		a.Logger.Printf("Пользователь %s не смог получить данные по ключу %s: %s",

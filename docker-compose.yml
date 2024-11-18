@@ -14,3 +14,14 @@ services:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
+
+  assets:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile_development
+    environment:
+      PORT: "3000"
+      ADDR: "0.0.0.0"
+      DB_URL: "user=assets password=assets dbname=assets host=postgres port=5432 sslmode=disable"
+    ports:
+      - "3000:3000"
