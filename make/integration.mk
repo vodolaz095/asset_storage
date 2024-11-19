@@ -10,7 +10,7 @@ export user_wrong_password="not_secret" # ошибка авторизации п
 
 # после успешного логина по команде make integraion/auth_ok
 # задайте эту переменную на полученный токен
-export session_good_token="88b93361a38167f95a5905ce88e1cd24"
+export session_good_token="c7f3d4cab427efae4dfb4dfbcd5130f0"
 
 # тут должен быть токен, которого нет в таблице сессий
 export session_bad_token="dd5ff7b78319528ad6a8e4d96eed2151"
@@ -45,3 +45,7 @@ integration/get_ok:
 
 integration/get_fail:
 	curl -v -H "Authorization: Bearer $(session_good_token)" $(endpoint)api/asset/not_found
+
+# получение списка объектов
+integration/list:
+	curl -v $(endpoint)api/list

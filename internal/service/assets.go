@@ -43,3 +43,8 @@ func (a *Assets) CreateAsset(ctx context.Context, author *model.User, assetsID, 
 
 	return nil
 }
+
+func (a *Assets) ListAll(ctx context.Context) ([]model.ListOfAssets, error) {
+	a.Logger.Printf("Загружаем список всех объектов")
+	return a.AssetsRepo.ListAll(ctx)
+}

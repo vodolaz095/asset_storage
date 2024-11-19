@@ -32,3 +32,31 @@ func (a *Asset) CreateAsset(ctx context.Context, author *model.User, name, conte
 	)
 	return err
 }
+
+func (a *Asset) ListAll(ctx context.Context) (list []model.ListOfAssets, err error) {
+	query := `select assets.name as "name",
+u.login as "author",
+length(assets.data) as "size",
+assets.created_at as "created_at"
+from assets
+left join users u on assets.uid = u.id
+order by assets.name asc;
+`
+	var item model.ListOfAssets
+	rows, err := a.Conn.Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		err = rows.Scan(&item.Name, &item.Author, &item.Size, &item.CreatedAt)
+		if err != nil {
+			return nil, err
+		}
+		list = append(list, item)
+	}
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+	return list, nil
+}
