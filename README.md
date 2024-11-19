@@ -273,6 +273,8 @@ https://github.com/vodolaz095/asset_storage/commit/98c1763259ae67ff9566cbde2d23c
    заголовке `X-Forwarded-For` или в `CF-Connecting-IP` для Cloudflare. Также бы было неплохо указать список IP адресов reverse-proxy 
    запросам с которых мы доверяем см. https://pkg.go.dev/github.com/gin-gonic/gin#Engine.SetTrustedProxies
 
+реализовано в коммите
+https://github.com/vodolaz095/asset_storage/commit/7fb5ec52578a2e8c59879290f7f3a1bc948f4174
 
 **Реализуйте методы API для получения списка всех закаченных файлов**
 долго
