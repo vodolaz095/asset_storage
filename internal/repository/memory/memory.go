@@ -43,3 +43,11 @@ func (r *Repository) LoadAssetForUser(ctx context.Context, assetID string, user 
 func (r *Repository) CreateAsset(ctx context.Context, author *model.User, name, content string) error {
 	return fmt.Errorf("not implemented")
 }
+
+func (r *Repository) ListAll(ctx context.Context) ([]model.ListOfAssets, error) {
+	return nil, fmt.Errorf("not implemented")
+}
+
+func (r *Repository) DeleteMyAsset(ctx context.Context, author *model.User, assetID string) (err error) {
+	return fmt.Errorf("not implemented")
+}

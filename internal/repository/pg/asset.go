@@ -60,3 +60,21 @@ order by assets.name asc;
 	}
 	return list, nil
 }
+
+func (a *Asset) DeleteMyAsset(ctx context.Context, author *model.User, assetID string) (err error) {
+	var ownerID uint64
+	err = a.Conn.
+		QueryRow(ctx, "SELECT uid FROM assets WHERE name=$1 and uid=$2", assetID, author.ID).
+		Scan(&ownerID)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return model.AssetNotFoundError
+		}
+		return err
+	}
+	if ownerID != author.ID {
+		return model.ForbiddenError
+	}
+	_, err = a.Conn.Exec(ctx, "DELETE FROM assets WHERE name=$1 and uid=$2", assetID, author.ID)
+	return err
+}

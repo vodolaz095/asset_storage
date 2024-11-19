@@ -48,3 +48,16 @@ func (a *Assets) ListAll(ctx context.Context) ([]model.ListOfAssets, error) {
 	a.Logger.Printf("Загружаем список всех объектов")
 	return a.AssetsRepo.ListAll(ctx)
 }
+
+func (a *Assets) DeleteMyAsset(ctx context.Context, author *model.User, assetID string) error {
+	a.Logger.Printf("Пользователь %s пытается удалить объект %s...",
+		author.Login, assetID)
+	err := a.AssetsRepo.DeleteMyAsset(ctx, author, assetID)
+	if err != nil {
+		a.Logger.Printf("Пользователь %s не смог удалить объект %s : %s",
+			author.Login, assetID, err)
+		return err
+	}
+	a.Logger.Printf("Пользователь %s удалил объект %s.", author.Login, assetID)
+	return nil
+}

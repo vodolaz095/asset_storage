@@ -326,7 +326,39 @@ curl -v "http://localhost:3000/"api/list
 
 
 **Реализуйте методы API для удаления файлов.**
-долго
+Реализовано как вызов `DELETE http://localhost:3000/api/delete/{name}`
+
+в первом терминале
+```shell
+$ make integration/delete 
+curl -v -X DELETE -H "Authorization: Bearer "c7f3d4cab427efae4dfb4dfbcd5130f0"" "http://localhost:3000/"api/delete/"key_13"
+* processing: http://localhost:3000/api/delete/key_13
+*   Trying [::1]:3000...
+* Connected to localhost (::1) port 3000
+> DELETE /api/delete/key_13 HTTP/1.1
+> Host: localhost:3000
+> User-Agent: curl/8.2.1
+> Accept: */*
+> Authorization: Bearer c7f3d4cab427efae4dfb4dfbcd5130f0
+> 
+< HTTP/1.1 204 No Content
+< Date: Tue, 19 Nov 2024 17:44:06 GMT
+< 
+* Connection #0 to host localhost left intact
+
+```
+
+запущенное в другом терминале приложение выведет лог вроде такого
+```shell
+$ make start
+go run main.go
+20:44:04 main.go:85: ASSET: Запускаем приложение на 0.0.0.0:3000...
+20:44:06 authentication.go:34: ASSET: Сессия востановлена для пользователя: alice
+20:44:06 transport_delete.go:42: ASSET: Пользователь alice восстановлен из сессии
+20:44:06 assets.go:53: ASSET: Пользователь alice пытается удалить объект key_13...
+20:44:06 assets.go:61: ASSET: Пользователь alice удалил объект key_13.
+```
+
 
 **Реализуйте работу сервера по протоколу HTTPS.**
 См. [transport.go](internal%2Ftransport%2Fhttp%2Ftransport.go) - функция ListenHTTPS

@@ -23,7 +23,7 @@ export asset_body=body_$(shell date "+%S")
 
 # после того, как вы создадите объект по команде integration/create_ok, в эту переменную надо сохранить
 # идентификатор созданного объекта
-export asset_key_good="key_42"
+export asset_key_good="key_13"
 
 # аутентификация
 integration/auth_ok:
@@ -49,3 +49,7 @@ integration/get_fail:
 # получение списка объектов
 integration/list:
 	curl -v $(endpoint)api/list
+
+# удаление объекта
+integration/delete:
+	curl -v -X DELETE -H "Authorization: Bearer $(session_good_token)" $(endpoint)api/delete/$(asset_key_good)

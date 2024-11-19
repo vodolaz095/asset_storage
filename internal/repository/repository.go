@@ -26,4 +26,5 @@ type Assets interface {
 	LoadAssetForUser(ctx context.Context, assetID string, user *model.User) (asset *model.Asset, err error)
 	CreateAsset(ctx context.Context, author *model.User, name, content string) error
 	ListAll(ctx context.Context) ([]model.ListOfAssets, error)
+	DeleteMyAsset(ctx context.Context, author *model.User, assetID string) (err error)
 }

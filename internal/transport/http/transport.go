@@ -23,6 +23,7 @@ func (s *WebServer) makeServer(ctx context.Context, addr string) {
 	handler.HandleFunc("/api/list", s.list)
 	handler.HandleFunc("/api/upload-asset/", s.upload)
 	handler.HandleFunc("/api/asset/", s.get)
+	handler.HandleFunc("/api/delete/", s.deleteMyAsset)
 	s.Srv = &http.Server{
 		Addr:    addr,
 		Handler: handler,
