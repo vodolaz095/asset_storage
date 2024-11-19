@@ -327,6 +327,7 @@ curl -v "http://localhost:3000/"api/list
 
 **Реализуйте методы API для удаления файлов.**
 Реализовано как вызов `DELETE http://localhost:3000/api/delete/{name}`
+в коммите https://github.com/vodolaz095/asset_storage/commit/e7c400a338a50c4eda35278ef959c04adbd8e653
 
 в первом терминале
 ```shell
