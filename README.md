@@ -277,7 +277,53 @@ https://github.com/vodolaz095/asset_storage/commit/98c1763259ae67ff9566cbde2d23c
 https://github.com/vodolaz095/asset_storage/commit/7fb5ec52578a2e8c59879290f7f3a1bc948f4174
 
 **Реализуйте методы API для получения списка всех закаченных файлов**
-долго
+
+Реализован в коммите https://github.com/vodolaz095/asset_storage/commit/2e8914f99aacce4bbca64242afa65453f4f6113f
+```shell
+
+$ make integration/list 
+
+curl -v "http://localhost:3000/"api/list
+* processing: http://localhost:3000/api/list
+*   Trying [::1]:3000...
+* Connected to localhost (::1) port 3000
+> GET /api/list HTTP/1.1
+> Host: localhost:3000
+> User-Agent: curl/8.2.1
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< Date: Tue, 19 Nov 2024 17:13:41 GMT
+< Content-Length: 338
+< Content-Type: text/plain; charset=utf-8
+< 
+[
+ {
+  "name": "key_13",
+  "author": "alice",
+  "size": 7,
+  "created_at": "2024-11-19T19:54:13.327996+03:00"
+ },
+ {
+  "name": "key_16",
+  "author": "alice",
+  "size": 7,
+  "created_at": "2024-11-19T19:54:16.46712+03:00"
+ },
+ {
+  "name": "key_17",
+  "author": "alice",
+  "size": 7,
+  "created_at": "2024-11-19T19:54:17.397095+03:00"
+ }
+]
+
+
+
+
+
+```
+
 
 **Реализуйте методы API для удаления файлов.**
 долго
