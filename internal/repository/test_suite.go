@@ -12,6 +12,7 @@ import (
 func TestRepository(t *testing.T, user User, session Session, assets Assets) {
 	const goodUsername, goodPassword = "alice", "secret"
 	const badUsername, badPassword = "not_alice", "not_secret"
+	const remoteAddr = "[::1]:43466"
 
 	t.Parallel()
 
@@ -39,7 +40,7 @@ func TestRepository(t *testing.T, user User, session Session, assets Assets) {
 	t.Run("user.Login", func(tt *testing.T) {
 		tt.Run("good login and password", func(ttt *testing.T) {
 			ctx := context.TODO()
-			ses, err := user.Login(ctx, goodUsername, goodPassword)
+			ses, err := user.Login(ctx, goodUsername, goodPassword, remoteAddr)
 			if err != nil {
 				ttt.Errorf("error logging in as %s %s: %s", goodUsername, goodPassword, err)
 				return
@@ -48,7 +49,7 @@ func TestRepository(t *testing.T, user User, session Session, assets Assets) {
 		})
 		tt.Run("good login, bad password", func(ttt *testing.T) {
 			ctx := context.TODO()
-			ses, err := user.Login(ctx, goodUsername, badPassword)
+			ses, err := user.Login(ctx, goodUsername, badPassword, remoteAddr)
 			if err != nil {
 				if errors.Is(err, model.WrongUsernameOrPasswordError) {
 					ttt.Logf("failed as expected")
@@ -61,7 +62,7 @@ func TestRepository(t *testing.T, user User, session Session, assets Assets) {
 		})
 		tt.Run("bad login, good password", func(ttt *testing.T) {
 			ctx := context.TODO()
-			ses, err := user.Login(ctx, badUsername, goodPassword)
+			ses, err := user.Login(ctx, badUsername, goodPassword, remoteAddr)
 			if err != nil {
 				if errors.Is(err, model.WrongUsernameOrPasswordError) {
 					ttt.Logf("failed as expected")
@@ -74,7 +75,7 @@ func TestRepository(t *testing.T, user User, session Session, assets Assets) {
 		})
 		tt.Run("bad login and bad password", func(ttt *testing.T) {
 			ctx := context.TODO()
-			ses, err := user.Login(ctx, badUsername, badPassword)
+			ses, err := user.Login(ctx, badUsername, badPassword, remoteAddr)
 			if err != nil {
 				if errors.Is(err, model.WrongUsernameOrPasswordError) {
 					ttt.Logf("failed as expected")

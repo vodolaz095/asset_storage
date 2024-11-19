@@ -10,7 +10,7 @@ export user_wrong_password="not_secret" # ошибка авторизации п
 
 # после успешного логина по команде make integraion/auth_ok
 # задайте эту переменную на полученный токен
-export session_good_token="c38fcc2c923d818b1ba765eaf5053d18"
+export session_good_token="88b93361a38167f95a5905ce88e1cd24"
 
 # тут должен быть токен, которого нет в таблице сессий
 export session_bad_token="dd5ff7b78319528ad6a8e4d96eed2151"

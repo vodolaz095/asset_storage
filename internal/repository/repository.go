@@ -13,7 +13,7 @@ type Repository interface {
 
 type User interface {
 	Repository
-	Login(ctx context.Context, login, password string) (session *model.Session, err error)
+	Login(ctx context.Context, login, password, address string) (session *model.Session, err error)
 }
 
 type Session interface {

@@ -28,7 +28,7 @@ func (r *Repository) Close(ctx context.Context) error {
 	return fmt.Errorf("not implemented")
 }
 
-func (r *Repository) Login(ctx context.Context, username, password string) (session *model.Session, err error) {
+func (r *Repository) Login(ctx context.Context, username, password, address string) (session *model.Session, err error) {
 	return nil, fmt.Errorf("not implemented")
 }
 

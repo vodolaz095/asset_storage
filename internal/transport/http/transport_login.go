@@ -32,8 +32,16 @@ func (s *WebServer) login(writer http.ResponseWriter, request *http.Request) {
 		)
 		return
 	}
+	// TODO - в случае, если используется reverse proxy, то в request.RemoteAddr
+	// будет адрес прокси сервера, а адрес клиента будет в заголовке
+	// `X-Forwarded-For` или в `CF-Connecting-IP` для Cloudflare.
+	// Также бы было неплохо указать список IP адресов reverse-proxy
+	// запросам с которых мы доверяем см. https://pkg.go.dev/github.com/gin-gonic/gin#Engine.SetTrustedProxies
+	// мне кажется, это довольно сложно корректно реализовать без готовой библиотеки.
 	s.Logger.Printf("Поступил запрос на авторизацию с %s", request.RemoteAddr)
-	session, err := s.Authentication.Login(request.Context(), form.Username, form.Password)
+	session, err := s.Authentication.Login(request.Context(),
+		form.Username, form.Password, request.RemoteAddr,
+	)
 	if err != nil {
 		if errors.Is(err, model.WrongUsernameOrPasswordError) {
 			writer.WriteHeader(http.StatusUnauthorized)

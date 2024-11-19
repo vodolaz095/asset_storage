@@ -14,9 +14,9 @@ type Authentication struct {
 	Logger      *log.Logger
 }
 
-func (a *Authentication) Login(ctx context.Context, username, password string) (*model.Session, error) {
+func (a *Authentication) Login(ctx context.Context, username, password, address string) (*model.Session, error) {
 	a.Logger.Printf("Пользователь %s пытается авторизоваться...", username)
-	session, err := a.UserRepo.Login(ctx, username, password)
+	session, err := a.UserRepo.Login(ctx, username, password, address)
 	if err != nil {
 		a.Logger.Printf("Пользователь %s не смог авторизоваться: %s.", username, err)
 		return nil, err
